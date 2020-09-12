@@ -52,12 +52,12 @@ public class Transaction {
 
     // 签名
     public void sign() throws Exception {
-        this.signature = privateEncrypt(this.computeHash().getBytes(), this.to.getPublicKey());
+        this.signature = privateEncrypt(this.computeHash().getBytes(), this.to.getPrivateKey());
     }
 
     // 验证交易是否合法
     public boolean isValid() throws Exception {
-        return Arrays.equals(publicDecrypt(this.signature, this.to.getPrivateKey()), this.computeHash().getBytes());
+        return Arrays.equals(publicDecrypt(this.signature, this.to.getPublicKey()), this.computeHash().getBytes());
     }
 
     @Override
