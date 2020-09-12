@@ -6,9 +6,12 @@ import java.util.Map;
 // User类实现
 public class User {
 
-    public final String name;               // 用户名
-    private final String publicKey;         // 私钥
-    private final String privateKey;        // 公钥
+    // 用户名
+    public final String name;
+    // 私钥
+    private final String publicKey;
+    // 公钥
+    private final String privateKey;
 
     private static final String PUBLIC_KEY = "RSAPublicKey";
     private static final String PRIVATE_KEY = "RSAPrivateKey";
@@ -16,7 +19,8 @@ public class User {
     // Constructor
     public User(String userName) {
         this.name = userName;
-        Map<String, String> keyMap = initKey();     // 生成密钥对
+        // 生成密钥对
+        Map<String, String> keyMap = initKey();
         assert keyMap != null;
         this.publicKey = keyMap.get(PUBLIC_KEY);
         this.privateKey = keyMap.get(PRIVATE_KEY);
@@ -30,6 +34,7 @@ public class User {
         return privateKey;
     }
 
+    @Override
     public String toString() {
         return this.name;
     }

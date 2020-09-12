@@ -9,16 +9,23 @@ import java.util.List;
 // Chain类实现
 
 public class Chain {
-    Deque<Block> blockChain;                // 区块链
-    List<Transaction> TransactionPool;      // 交易池
-    int minerReward = 50;                   // 矿工奖赏
-    int difficulty = 4;                     // 挖矿难度
+    // 区块链
+    Deque<Block> blockChain;
+    // 交易池
+    List<Transaction> transactionPool;
+    // 矿工奖赏
+    int minerReward = 50;
+    // 挖矿难度
+    int difficulty = 4;
     User system;
     // Constructor
     Chain() {
-        this.blockChain = new ArrayDeque<>();                   // 区块队列
-        this.blockChain.addLast(this.generateGenesisBlock());   // 添加祖先区块
-        this.TransactionPool = new ArrayList<>();               // 交易队列
+        // 区块队列
+        this.blockChain = new ArrayDeque<>();
+        // 添加祖先区块
+        this.blockChain.addLast(this.generateGenesisBlock());
+        // 交易队列
+        this.transactionPool = new ArrayList<>();
         this.system = new User("");
     }
 
@@ -34,7 +41,7 @@ public class Chain {
     public void transaction2Pool(User from, User to, int amount) throws Exception {
         Transaction t = new Transaction(from, to, amount);
         if (t.isValid()) {
-            this.TransactionPool.add(t);
+            this.transactionPool.add(t);
         }
     }
 
@@ -42,20 +49,20 @@ public class Chain {
     public void mineTransaction(User address, String data) throws Exception {
         this.validateTransactions();
         assert this.blockChain.peekLast() != null;
-        Block newBlock = new Block(TransactionPool, this.blockChain.peekLast().hash, data);
+        Block newBlock = new Block(transactionPool, this.blockChain.peekLast().hash, data);
         newBlock.mine(this.difficulty);
         Transaction minerReward = new Transaction(this.system, address, this.minerReward);
         if (minerReward.isValid()) {
-            this.TransactionPool.add(minerReward);
+            this.transactionPool.add(minerReward);
         }
         pack(newBlock);
     }
 
     // 打包之前验证每个交易的合法性
     private void validateTransactions() throws Exception {
-        for (Transaction t : TransactionPool) {
+        for (Transaction t : transactionPool) {
             if (!t.isValid()) {
-                TransactionPool.remove(t);
+                transactionPool.remove(t);
             }
         }
     }
@@ -87,10 +94,11 @@ public class Chain {
         if (!validateChain()) {
             blockChain.pollLast();
         }
-        this.TransactionPool = new ArrayList<>();
+        this.transactionPool = new ArrayList<>();
     }
 
     // 打印区块链
+    @Override
     public String toString() {
         StringBuilder ret = new StringBuilder("BlockChain:\n");
         for (Block block : this.blockChain) {

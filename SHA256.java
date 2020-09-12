@@ -24,8 +24,6 @@ public class SHA256 {
     }
     /**
      * 将byte转为16进制
-     * @param bytes
-     * @return
      */
     private static String byte2Hex(byte[] bytes){
         StringBuilder stringBuffer = new StringBuilder();

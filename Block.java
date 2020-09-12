@@ -11,12 +11,18 @@ import com.alibaba.fastjson.JSON;
 
 public class Block {
 
-    List<Transaction> transactions;     // 交易记录
-    String previousHash;                // 上一个区块的hash
-    String hash;                        // 自己的hash
-    String data;                        // 初始字符串
-    int nonce = 0;                      // 初始nonce
-    Timestamp time;                     // block生成的时间
+    // 交易记录
+    List<Transaction> transactions;
+    // 上一个区块的hash
+    String previousHash;
+    // 自己的hash
+    String hash;
+    // 初始字符串
+    String data;
+    // 初始nonce
+    int nonce = 0;
+    // block生成的时间
+    Timestamp time;
 
     // Constructor
     Block(List<Transaction> transactions, String previousHash, String data) {
@@ -52,6 +58,7 @@ public class Block {
     }
 
     // 打印区块信息
+    @Override
     public String toString() {
         StringBuilder ret = new StringBuilder();
         ret.append("\tTransactions:\n");

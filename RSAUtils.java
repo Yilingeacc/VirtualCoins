@@ -17,7 +17,7 @@ public class RSAUtils {
 
     private static final String PUBLIC_KEY = "RSAPublicKey";
     private static final String PRIVATE_KEY = "RSAPrivateKey";
-    private static final int keySize = 1024;
+    private static final int KEY_SIZE = 1024;
 
     /**
      * 得到密钥字符串（经过base64编码）
@@ -86,8 +86,7 @@ public class RSAUtils {
      * @throws Exception
      */
     public static PublicKey getPublicKey(String key) throws Exception {
-        byte[]keyBytes;
-        keyBytes = (new BASE64Decoder()).decodeBuffer(key);
+        byte[]keyBytes = (new BASE64Decoder()).decodeBuffer(key);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
         return keyFactory.generatePublic(keySpec);
@@ -99,8 +98,7 @@ public class RSAUtils {
      * @throws Exception
      */
     public static PrivateKey getPrivateKey(String key) throws Exception {
-        byte[]keyBytes;
-        keyBytes = (new BASE64Decoder()).decodeBuffer(key);
+        byte[]keyBytes = (new BASE64Decoder()).decodeBuffer(key);
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
         return keyFactory.generatePrivate(keySpec);
@@ -112,12 +110,14 @@ public class RSAUtils {
             // 生成公钥和私钥对，基于RSA算法生成对象
             KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(KEY_ALGORITHM);
             // 初始化秘钥对生成器
-            keyPairGen.initialize(keySize);
+            keyPairGen.initialize(KEY_SIZE);
             // 生成一个密钥对，保存在keyPair中
             KeyPair keyPair = keyPairGen.generateKeyPair();
 
-            PublicKey publicKey = keyPair.getPublic();         // 得到公钥
-            PrivateKey privateKey = keyPair.getPrivate();      // 得到私钥
+            // 得到公钥
+            PublicKey publicKey = keyPair.getPublic();
+            // 得到私钥
+            PrivateKey privateKey = keyPair.getPrivate();
             Map<String, String> keyMap = new HashMap<>(2);
             keyMap.put(PUBLIC_KEY, getKeyString(publicKey));
             keyMap.put(PRIVATE_KEY, getKeyString(privateKey));
@@ -130,11 +130,11 @@ public class RSAUtils {
 
     // 分段加密解密
     private static byte[] rsaSplitCodec(Cipher cipher, int opmode, byte[] datas) throws Exception {
-        int maxBlock = 0;
+        int maxBlock;
         if (opmode == Cipher.DECRYPT_MODE){
-            maxBlock = keySize / 8;
+            maxBlock = KEY_SIZE / 8;
         } else {
-            maxBlock = keySize / 8 - 11;
+            maxBlock = KEY_SIZE / 8 - 11;
         }
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         int offSet = 0;
